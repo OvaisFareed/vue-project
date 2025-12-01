@@ -26,7 +26,21 @@ const onSubmit = form.handleSubmit((values) => {
 </script>
 
 <template>
-  <form @submit="onSubmit">
-    ...
+  <form class="w-2/3 space-y-6" @submit="onSubmit">
+    <FormField v-slot="{ componentField }" name="username">
+      <FormItem>
+        <FormLabel>Username</FormLabel>
+        <FormControl>
+          <Input type="text" placeholder="shadcn" v-bind="componentField" />
+        </FormControl>
+        <FormDescription>
+          This is your public display name.
+        </FormDescription>
+        <FormMessage />
+      </FormItem>
+    </FormField>
+    <Button type="submit">
+      Submit
+    </Button>
   </form>
 </template>
