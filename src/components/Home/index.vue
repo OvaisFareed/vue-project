@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <h1 class="text-2xl font-bold my-2">Dashboard</h1>
+  <h2 class="text-xl font-bold">Dashboard</h2>
 </template>
 
 <style scoped>

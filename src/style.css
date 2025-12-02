@@ -118,3 +118,7 @@
     @apply bg-background text-foreground;
   }
 }
+
+.section-padding {
+  @apply py-2 sm:py-6;
+}
