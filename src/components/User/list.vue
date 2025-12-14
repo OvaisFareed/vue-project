@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { users } from '@/store'
+import { users } from '@/store';
 import {
   Table,
   TableBody,
@@ -9,14 +9,19 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table'
+} from '@/components/ui/table';
 import {
   Dialog,
   DialogContent,
   DialogTrigger,
-} from '@/components/ui/dialog'
-import { Button } from '@/components/ui/button'
-import AddUser from '@/components/User/add.vue'
+} from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import AddUser from '@/components/User/add.vue';
+import { PencilIcon, Trash } from 'lucide-vue-next';
+
+const deleteUser = (index: number) => {
+  users.list.splice(index, 1);
+}
 
 </script>
 
@@ -39,7 +44,7 @@ import AddUser from '@/components/User/add.vue'
       <TableCaption>A list of all recent users.</TableCaption>
       <TableHeader>
         <TableRow>
-          <TableHead class="w-[100px]">
+          <TableHead>
             ID
           </TableHead>
           <TableHead>Name</TableHead>
@@ -51,24 +56,27 @@ import AddUser from '@/components/User/add.vue'
           <TableCell class="font-medium">
             {{ index + 1 }}
           </TableCell>
-          <TableCell>{{ user.username }}</TableCell>
+          <TableCell>{{ user.name }}</TableCell>
           <TableCell class="text-right">
             <Dialog>
               <DialogTrigger as-child>
-                <Button>
-                  Edit
+                <Button variant="outline" size="icon">
+                  <PencilIcon />
                 </Button>
               </DialogTrigger>
               <DialogContent class="sm:max-w-[425px]">
-                <AddUser is-edit="true" />
+                <AddUser is-edit="true" :name="user.name" />
               </DialogContent>
             </Dialog>
+            <Button class="ml-1" variant="destructive" size="icon" @click.prevent="deleteUser(index)">
+              <Trash />
+            </Button>
           </TableCell>
         </TableRow>
       </TableBody>
       <TableFooter>
         <TableRow>
-          <TableCell colspan="3">
+          <TableCell colspan="2">
             Total
           </TableCell>
           <TableCell class="text-right">
@@ -81,6 +89,4 @@ import AddUser from '@/components/User/add.vue'
   </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

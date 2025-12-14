@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useForm } from 'vee-validate'
-import { toTypedSchema } from '@vee-validate/zod'
-import * as z from 'zod'
+import { useForm } from 'vee-validate';
+import { toTypedSchema } from '@vee-validate/zod';
+import * as z from 'zod';
 import {
   FormControl,
   FormDescription,
@@ -9,23 +9,30 @@ import {
   FormItem,
   FormLabel,
   FormMessage
-} from '@/components/ui/form'
+} from '@/components/ui/form';
 import {
   DialogClose,
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { users } from '@/store'
-import {computed} from "vue";
+} from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { users } from '@/store';
+import { computed, onMounted } from "vue";
 
 const props = defineProps({
   isEdit: {
     type: String,
   },
+  name: {
+    type: String,
+  },
+});
+
+onMounted(() => {
+  form.setValues({ name: props.name });
 });
 
 const buttonLabel = computed(() => {
@@ -33,18 +40,22 @@ const buttonLabel = computed(() => {
 });
 
 const formSchema = toTypedSchema(z.object({
-  username: z.string().min(2).max(50),
-}))
+  name: z.string().min(2).max(50),
+}));
 
 const form = useForm({
   validationSchema: formSchema,
-})
+});
 
 const onSubmit = form.handleSubmit((values) => {
-  console.log('Form submitted!', values)
-  users.list.push(values);
+  if (props.isEdit) {
+    const index = users.list.findIndex(item => item.name === props.name);
+    users.list.splice(index, 1, values);
+  } else {
+    users.list.push(values);
+  }
   form.resetForm();
-})
+});
 </script>
 
 <template>
@@ -57,18 +68,18 @@ const onSubmit = form.handleSubmit((values) => {
       </DialogDescription>
     </DialogHeader>
     <div class="grid gap-4">
-        <FormField v-slot="{ componentField }" name="username">
-          <FormItem>
-            <FormLabel>Username</FormLabel>
-            <FormControl>
-              <Input type="text" placeholder="shadcn" v-bind="componentField" />
-            </FormControl>
-            <FormDescription>
-              This is your public display name.
-            </FormDescription>
-            <FormMessage />
-          </FormItem>
-        </FormField>
+      <FormField v-slot="{ componentField }" name="name">
+        <FormItem>
+          <FormLabel>Name</FormLabel>
+          <FormControl>
+            <Input type="text" placeholder="Enter your name" v-bind="componentField" />
+          </FormControl>
+          <FormDescription>
+            This is your public display name.
+          </FormDescription>
+          <FormMessage />
+        </FormItem>
+      </FormField>
     </div>
     <DialogFooter>
       <DialogClose as-child>

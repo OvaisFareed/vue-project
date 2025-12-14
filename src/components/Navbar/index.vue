@@ -16,12 +16,13 @@ const userMenu: { title: string, href: string, description: string }[] = [
     href: '/users',
     description:
         'All users',
-  },  {
+  },
+  /* {
     title: 'User',
     href: '/user/add',
     description:
         'Add a user',
-  },
+  }, */
 ]
 </script>
 
